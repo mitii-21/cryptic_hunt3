@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Reshuffling Puzzle</title>
+    <style>
+        body {
+            background-image: url('https://wallpapercave.com/wp/wp2680486.jpg'); /* Updated Sherlock Holmes-themed background */
+            background-size: cover;
+            background-position: center;
+            color: #f5ecec;
+            font-family: 'Georgia', serif;
+            text-align: center;
+        }
+        .puzzle {
+            display: grid;
+            grid-template-columns: repeat(2, 365px);
+            grid-template-rows: repeat(2, 266px);
+            gap: 5px;
+            justify-content: center;
+        }
+        .puzzle img {
+            width: 365px;
+            height: 266px;
+            border: 2px solid white;
+        }
+        .input-box {
+            margin-top: 20px;
+        }
+        .input-box input, .input-box button {
+            padding: 10px;
+            font-size: 18px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: limegreen;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Rearrange the Mystery Image 🔍</h1>
+    <p>Enter the numbers in the correct order (1-4) to reveal the complete image.</p>
+    <div class="puzzle" id="puzzle"></div>
+    <div class="input-box">
+        <label for="order">Enter the sequence (e.g., 1,2,3,4): </label>
+        <input type="text" id="order" placeholder="Enter the sequence">
+        <button onclick="checkOrder()">Check Order</button>
+    </div>
+    <div class="message" id="message">✅ Congratulations! You've solved the puzzle!</div>
+    <script>
+        let originalOrder = [1, 2, 3, 4];
+        let shuffledOrder = [];
+
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            do {
+                shuffled.sort(() => Math.random() - 0.5);
+            } while (JSON.stringify(shuffled) === JSON.stringify(array));
+            return shuffled;
+        }
+
+        function createPuzzle() {
+            const puzzleContainer = document.getElementById('puzzle');
+            shuffledOrder = shuffleArray(originalOrder);
+            puzzleContainer.innerHTML = '';
+
+            shuffledOrder.forEach(part => {
+                const imgElement = document.createElement('img');
+                imgElement.src = `murder_enhanced_part_${part}.jpg`;
+                imgElement.alt = `Puzzle part ${part}`;
+                imgElement.dataset.part = part;
+                puzzleContainer.appendChild(imgElement);
+            });
+        }
+
+        function checkOrder() {
+            const userInput = document.getElementById('order').value.trim();
+            const userOrder = userInput.split(',').map(num => parseInt(num.trim(), 10));
+
+            if (JSON.stringify(userOrder) === JSON.stringify(shuffledOrder)) {
+                document.getElementById('message').style.display = 'block';
+            } else {
+                alert("❌ Wrong order! Try again.");
+                createPuzzle();
+            }
+        }
+
+        window.onload = createPuzzle;
+    </script>
+</body>
+</html>
