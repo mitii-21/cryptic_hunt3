@@ -82,7 +82,6 @@
             const userOrder = userInput.split(',').map(num => parseInt(num.trim(), 10));
 
             if (JSON.stringify(userOrder) === JSON.stringify(shuffledOrder)) {
-                document.getElementById('message').style.display = 'block';
                 window.location.href = "clue4.html";
             } else {
                 alert("❌ Wrong order! Try again.");
